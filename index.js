@@ -82,6 +82,13 @@ async function run() {
       res.send({message: "Product already exits on your cart"});
     });
 
+    // update a product
+    app.patch("/jewelry/:id", async (req, res)=>{
+      const data = req.body;
+      console.log(data);
+      res.send({message: "data received"})
+    })
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
