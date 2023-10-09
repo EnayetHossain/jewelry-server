@@ -70,8 +70,15 @@ async function run() {
     // add to cart
     app.post("/cart", async (req, res)=>{
       const data = req.body;
-      const result = await cartCollection.insertOne(data);
-      res.send(result);
+      const query = {product_id: data.product_id}
+      const findProduct = await cartCollection.findOne(query);
+
+      if(!findProduct){
+        const result = await cartCollection.insertOne(data);
+        res.send(result);
+      }
+      
+      res.send({message: "Product exits on your cart"});
     });
 
 
