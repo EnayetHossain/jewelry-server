@@ -29,6 +29,7 @@ async function run() {
     await client.connect();
 
     const jewelryCollection = client.db("jewelry").collection("jewels");
+    const cartCollection = client.db("jewelry").collection("carts");
 
     // get all jewelry data
     app.get("/jewelry", async (req, res)=>{
