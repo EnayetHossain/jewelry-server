@@ -33,61 +33,61 @@ async function run() {
     const usersCollection = client.db("jewelry").collection("users");
 
     // get all jewelry data
-    app.get("/jewelry", async (req, res)=>{
-        const query = {};
-        const result = await jewelryCollection.find(query).toArray();
-        res.send(result);
+    app.get("/jewelry", async (req, res) => {
+      const query = {};
+      const result = await jewelryCollection.find(query).toArray();
+      res.send(result);
     });
 
     //get single jewelry data
-    app.get("/jewelry/:id", async (req, res)=>{
-        const id = req.params.id;
-        const query = {_id: new ObjectId(id)};
-        const result = await jewelryCollection.findOne(query);
-        res.send(result);
+    app.get("/jewelry/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await jewelryCollection.findOne(query);
+      res.send(result);
     });
 
     // get all jewelry of a single user
-    app.get("/my-jewelry", async (req, res)=>{
-        let query = {};
+    app.get("/my-jewelry", async (req, res) => {
+      let query = {};
 
-        if(req.query?.email){
-            query = {email: req.query.email}
-        }else{
-            res.status(403).send({message: "Bad request"})
-        }
+      if (req.query?.email) {
+        query = { email: req.query.email }
+      } else {
+        res.status(403).send({ message: "Bad request" })
+      }
 
-        const result = await jewelryCollection.find(query).toArray();
-        res.send(result);
+      const result = await jewelryCollection.find(query).toArray();
+      res.send(result);
     });
 
     // add a jewelry
-    app.post("/jewelry", async(req, res)=>{
+    app.post("/jewelry", async (req, res) => {
       const data = req.body;
       const result = await jewelryCollection.insertOne(data);
       res.send(result);
     });
 
     // add to cart
-    app.post("/cart", async (req, res)=>{
+    app.post("/cart", async (req, res) => {
       const data = req.body;
-      const query = {product_id: data.product_id}
+      const query = { product_id: data.product_id }
       const findProduct = await cartCollection.findOne(query);
 
-      if(!findProduct){
+      if (!findProduct) {
         const result = await cartCollection.insertOne(data);
         res.send(result);
       }
-      
-      res.send({message: "Product already exits on your cart"});
+
+      res.send({ message: "Product already exits on your cart" });
     });
 
     // update a product
-    app.patch("/jewelry/:id", async (req, res)=>{
+    app.patch("/jewelry/:id", async (req, res) => {
       const data = req.body;
       const id = req.params.id;
 
-      const query = {_id: new ObjectId(id)}
+      const query = { _id: new ObjectId(id) }
       const updateDoc = {
         $set: {
           picture: data.photo,
@@ -102,12 +102,26 @@ async function run() {
     });
 
     // delete operation
-    app.delete("/jewelry/:id", async (req, res)=>{
+    app.delete("/jewelry/:id", async (req, res) => {
       const id = req.params.id;
-      const query = {_id: new ObjectId(id)}
+      const query = { _id: new ObjectId(id) }
       const result = await jewelryCollection.deleteOne(query);
       res.send(result);
-    })
+    });
+
+    app.post("/users", async (req, res) => {
+      const data = req.body;
+      const query = { email: data.email };
+
+      const userExists = await usersCollection.findOne(query);
+
+      if (userExists) {
+        return res.send({ message: "user already exists" });
+      }
+
+      const result = await usersCollection.insertOne(data);
+      res.send(result);
+    });
 
 
     // Send a ping to confirm a successful connection
@@ -122,10 +136,10 @@ run().catch(console.dir);
 
 
 // root route
-app.get("/", (req, res)=>{
-    res.send("server running");
+app.get("/", (req, res) => {
+  res.send("server running");
 });
 
-app.listen(port, ()=>{
-    console.log(`visit http://localhost:${port}`);
+app.listen(port, () => {
+  console.log(`visit http://localhost:${port}`);
 });
