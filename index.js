@@ -30,6 +30,7 @@ async function run() {
 
     const jewelryCollection = client.db("jewelry").collection("jewels");
     const cartCollection = client.db("jewelry").collection("carts");
+    const usersCollection = client.db("jewelry").collection("users");
 
     // get all jewelry data
     app.get("/jewelry", async (req, res)=>{
@@ -78,7 +79,7 @@ async function run() {
         res.send(result);
       }
       
-      res.send({message: "Product exits on your cart"});
+      res.send({message: "Product already exits on your cart"});
     });
 
 
