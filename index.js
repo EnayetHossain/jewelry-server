@@ -101,10 +101,12 @@ async function run() {
       res.send(result)
     });
 
+    // delete operation
     app.delete("/jewelry/:id", async (req, res)=>{
       const id = req.params.id;
-      console.log(id);
-      res.send({message: "id received"})
+      const query = {_id: new ObjectId(id)}
+      const result = await jewelryCollection.deleteOne(query);
+      res.send(result);
     })
 
 
