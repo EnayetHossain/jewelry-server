@@ -59,6 +59,11 @@ async function run() {
         res.send(result);
     });
 
+    // add a jewelry
+    app.post("/jewelry", async(req, res)=>{
+      
+    });
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
