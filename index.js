@@ -66,6 +66,13 @@ async function run() {
       res.send(result);
     });
 
+    // add to cart
+    app.post("/cart", async (req, res)=>{
+      const data = req.body;
+      console.log(data);
+      res.send({message: "data"});
+    });
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
