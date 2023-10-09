@@ -62,9 +62,8 @@ async function run() {
     // add a jewelry
     app.post("/jewelry", async(req, res)=>{
       const data = req.body;
-      console.log(data);
-
-      res.json(data);
+      const result = await jewelryCollection.insertOne(data);
+      res.send(result);
     });
 
 
