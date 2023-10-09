@@ -71,15 +71,8 @@ async function run() {
     // add to cart
     app.post("/cart", async (req, res) => {
       const data = req.body;
-      const query = { product_id: data.product_id }
-      const findProduct = await cartCollection.findOne(query);
-
-      if (!findProduct) {
-        const result = await cartCollection.insertOne(data);
-        res.send(result);
-      }
-
-      res.send({ message: "Product already exits on your cart" });
+      const result = await cartCollection.insertOne(data);
+      res.send(result);
     });
 
     // update a product
@@ -125,18 +118,42 @@ async function run() {
     });
 
     // get all user
-    app.get("/users", async (req, res)=>{
+    app.get("/users", async (req, res) => {
       const query = {};
       const result = await usersCollection.find(query).toArray();
       res.send(result);
     });
 
-    app.get("/users/:id", async (req, res)=>{
+    // get single user
+    app.get("/users/:id", async (req, res) => {
       const id = req.params.id
-      const query = {_id: new ObjectId(id)};
+      const query = { _id: new ObjectId(id) };
       const result = await usersCollection.findOne(query);
       res.send(result);
+    });
+
+    // user role
+    app.post("/users/role", async (req, res) => {
+      const email = req.body;
+      const query = { email: email.email }
+      const result = await usersCollection.findOne(query);
+      res.send(result)
     })
+
+    app.get("/carts", async (req, res) => {
+      const email = req.query.email;
+      const query = { email: email };
+
+      const result = await cartCollection.find(query).toArray();
+      res.send(result)
+    });
+
+    app.get("/carts/:id", async (req, res) => {
+      const id = req.params.id
+      const query = { _id: new ObjectId(id) };
+      const result = await cartCollection.findOne(query);
+      res.send(result);
+    });
 
 
     // Send a ping to confirm a successful connection
