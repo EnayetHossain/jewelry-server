@@ -86,7 +86,6 @@ async function run() {
     app.patch("/jewelry/:id", async (req, res)=>{
       const data = req.body;
       const id = req.params.id;
-      console.log(data)
 
       const query = {_id: new ObjectId(id)}
       const updateDoc = {
@@ -100,6 +99,12 @@ async function run() {
 
       const result = await jewelryCollection.updateOne(query, updateDoc)
       res.send(result)
+    });
+
+    app.delete("/jewelry/:id", async (req, res)=>{
+      const id = req.params.id;
+      console.log(id);
+      res.send({message: "id received"})
     })
 
 
