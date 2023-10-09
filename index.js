@@ -85,8 +85,21 @@ async function run() {
     // update a product
     app.patch("/jewelry/:id", async (req, res)=>{
       const data = req.body;
-      console.log(data);
-      res.send({message: "data received"})
+      const id = req.params.id;
+      console.log(data)
+
+      const query = {_id: new ObjectId(id)}
+      const updateDoc = {
+        $set: {
+          picture: data.photo,
+          title: data.title,
+          price: data.price,
+          description: data.description
+        }
+      }
+
+      const result = await jewelryCollection.updateOne(query, updateDoc)
+      res.send(result)
     })
 
 
