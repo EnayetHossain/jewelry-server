@@ -70,8 +70,8 @@ async function run() {
     // add to cart
     app.post("/cart", async (req, res)=>{
       const data = req.body;
-      console.log(data);
-      res.send({message: "data"});
+      const result = await cartCollection.insertOne(data);
+      res.send(result);
     });
 
 
