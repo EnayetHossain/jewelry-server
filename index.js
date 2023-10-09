@@ -109,6 +109,7 @@ async function run() {
       res.send(result);
     });
 
+    // save user in database
     app.post("/users", async (req, res) => {
       const data = req.body;
       const query = { email: data.email };
@@ -120,6 +121,13 @@ async function run() {
       }
 
       const result = await usersCollection.insertOne(data);
+      res.send(result);
+    });
+
+    // get all user
+    app.get("/users", async (req, res)=>{
+      const query = {};
+      const result = await usersCollection.find(query).toArray();
       res.send(result);
     });
 
